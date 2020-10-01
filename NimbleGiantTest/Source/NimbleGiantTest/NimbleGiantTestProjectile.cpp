@@ -3,6 +3,10 @@
 #include "NimbleGiantTestProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "DestructibleBox.h"
+#include "Kismet/GameplayStatics.h"
+#include "NimbleGiantTestCharacter.h"
+#include "NimbleGiantTestPlayerState.h"
 
 ANimbleGiantTestProjectile::ANimbleGiantTestProjectile() 
 {
@@ -36,9 +40,18 @@ void ANimbleGiantTestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Oth
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+		//OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
-		
+		ADestructibleBox* DestructibleBox = Cast<ADestructibleBox>(OtherActor);
+
+		if(DestructibleBox)
+		{
+			int value = 0;
+			int index = 1;
+			DestructibleBox->CascadeDestroy(value, index);
+			ANimbleGiantTestCharacter* Controller = Cast<ANimbleGiantTestCharacter>(GetOwner());
+			Controller->GetController()->GetPlayerState<ANimbleGiantTestPlayerState>()->AddScore(value);
+		}
 		
 		Destroy();
 	}

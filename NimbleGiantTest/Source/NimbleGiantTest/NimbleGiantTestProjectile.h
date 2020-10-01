@@ -19,6 +19,8 @@ class ANimbleGiantTestProjectile : public AActor
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	class UProjectileMovementComponent* ProjectileMovement;
 
+	
+	
 public:
 	ANimbleGiantTestProjectile();
 

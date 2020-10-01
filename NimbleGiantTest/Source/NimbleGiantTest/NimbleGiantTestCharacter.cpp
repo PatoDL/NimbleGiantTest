@@ -162,8 +162,10 @@ void ANimbleGiantTestCharacter::OnFire()
 				FActorSpawnParameters ActorSpawnParams;
 				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
+				
 				// spawn the projectile at the muzzle
-				World->SpawnActor<ANimbleGiantTestProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				ANimbleGiantTestProjectile* Projectile = World->SpawnActor<ANimbleGiantTestProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				Projectile->SetOwner(this);
 			}
 		}
 	}

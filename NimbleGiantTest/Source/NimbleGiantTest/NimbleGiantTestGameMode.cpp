@@ -4,6 +4,7 @@
 #include "NimbleGiantTestHUD.h"
 #include "NimbleGiantTestCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "NimbleGiantTestPlayerState.h"
 
 ANimbleGiantTestGameMode::ANimbleGiantTestGameMode()
 	: Super()
@@ -14,4 +15,6 @@ ANimbleGiantTestGameMode::ANimbleGiantTestGameMode()
 
 	// use our custom HUD class
 	HUDClass = ANimbleGiantTestHUD::StaticClass();
+
+	PlayerStateClass = ANimbleGiantTestPlayerState::StaticClass();
 }
