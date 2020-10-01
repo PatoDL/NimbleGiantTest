@@ -46,11 +46,11 @@ void ANimbleGiantTestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Oth
 
 		if(DestructibleBox)
 		{
-			int value = 0;
-			int index = 1;
-			DestructibleBox->CascadeDestroy(value, index);
+			uint32 ScoreToAdd = 0;
+			uint16 FibonacciIndex = 1;
+			DestructibleBox->CascadeDestroy(ScoreToAdd, FibonacciIndex);
 			ANimbleGiantTestCharacter* Controller = Cast<ANimbleGiantTestCharacter>(GetOwner());
-			Controller->GetController()->GetPlayerState<ANimbleGiantTestPlayerState>()->AddScore(value);
+			Controller->GetController()->GetPlayerState<ANimbleGiantTestPlayerState>()->AddScore(ScoreToAdd);
 		}
 		
 		Destroy();

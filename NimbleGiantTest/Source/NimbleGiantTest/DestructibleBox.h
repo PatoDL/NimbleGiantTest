@@ -16,21 +16,18 @@ public:
 	ADestructibleBox();
 
 	UPROPERTY(EditAnywhere, Category = Data)
-	int colorValue;
+	uint16 ColorValue;
 
 	UPROPERTY(EditAnywhere, Category = Implementation)
-	float rayMultiplier;
-
-	UPROPERTY(EditAnywhere, Category = Implementation)
-	float Impulse;
+	float RayMultiplier;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = Collision)
-	class UBoxComponent* CollisionComp;
+	class UBoxComponent* CollisionComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	class UStaticMeshComponent* StaticMeshComponent;
 	
-	bool bChecked;
+	bool bBoxAlreadyCheckedInCascade;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -39,7 +36,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	FORCEINLINE class UBoxComponent* GetCollisionComp() const { return CollisionComp; }
-	void CascadeDestroy(int &value, int index);
-	void CascadeFall();
+	FORCEINLINE class UBoxComponent* GetCollisionComponent() const { return CollisionComponent; }
+	void CascadeDestroy(uint32 &ScoreToAdd, uint16 FibonacciIndex);
 };
