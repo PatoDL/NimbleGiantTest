@@ -165,7 +165,8 @@ void ANimbleGiantTestCharacter::OnFire()
 				
 				// spawn the projectile at the muzzle
 				ANimbleGiantTestProjectile* Projectile = World->SpawnActor<ANimbleGiantTestProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
-				Projectile->SetOwner(this);
+				if(Projectile)
+					Projectile->SetOwner(this);
 			}
 		}
 	}

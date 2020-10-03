@@ -10,11 +10,12 @@
 
 ANimbleGiantTestProjectile::ANimbleGiantTestProjectile() 
 {
+	bReplicates = true;
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(5.0f);
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
-	CollisionComp->OnComponentHit.AddDynamic(this, &ANimbleGiantTestProjectile::OnHit);		// set up a notification for when this component hits something blocking
+	//CollisionComp->OnComponentHit.AddDynamic(this, &ANimbleGiantTestProjectile::OnHit);		// set up a notification for when this component hits something blocking
 
 	// Players can't walk on it
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
@@ -23,6 +24,11 @@ ANimbleGiantTestProjectile::ANimbleGiantTestProjectile()
 	// Set as root component
 	RootComponent = CollisionComp;
 
+	if (GetLocalRole() == ROLE_Authority)
+	{
+		CollisionComp->OnComponentHit.AddDynamic(this, &ANimbleGiantTestProjectile::OnHit);
+	}
+	
 	// Use a ProjectileMovementComponent to govern this projectile's movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
 	ProjectileMovement->UpdatedComponent = CollisionComp;
@@ -33,6 +39,8 @@ ANimbleGiantTestProjectile::ANimbleGiantTestProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	
 }
 
 void ANimbleGiantTestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -49,8 +57,8 @@ void ANimbleGiantTestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Oth
 			uint32 ScoreToAdd = 0;
 			uint16 FibonacciIndex = 1;
 			DestructibleBox->CascadeDestroy(ScoreToAdd, FibonacciIndex);
-			ANimbleGiantTestCharacter* Controller = Cast<ANimbleGiantTestCharacter>(GetOwner());
-			Controller->GetController()->GetPlayerState<ANimbleGiantTestPlayerState>()->AddScore(ScoreToAdd);
+			ANimbleGiantTestCharacter* Character = Cast<ANimbleGiantTestCharacter>(GetOwner());
+			Character->GetPlayerState<ANimbleGiantTestPlayerState>()->AddScore(ScoreToAdd);
 		}
 		
 		Destroy();

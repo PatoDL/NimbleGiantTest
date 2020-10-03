@@ -103,10 +103,10 @@ void ADestructibleBox::CascadeDestroy(uint32 &ScoreToAdd, uint16 FibonacciIndex)
 	
 	FVector BoxBoundsExtents = StaticMeshComponent->GetStaticMesh()->GetBounds().BoxExtent;
 	
-	bHits[0] = GetWorld()->LineTraceSingleByChannel(OutHits[0], GetActorLocation() + FVector::LeftVector * BoxBoundsExtents /3, GetActorLocation() + FVector::LeftVector * BoxBoundsExtents / 3 + FVector::UpVector * rayMultiplier, ECC_Visibility, CollisionQueryParams);
-	bHits[1] = GetWorld()->LineTraceSingleByChannel(OutHits[1], GetActorLocation() + FVector::RightVector * BoxBoundsExtents / 3, GetActorLocation() + FVector::RightVector * BoxBoundsExtents / 3 + FVector::UpVector * rayMultiplier, ECC_Visibility, CollisionQueryParams);
-	bHits[2] = GetWorld()->LineTraceSingleByChannel(OutHits[2], GetActorLocation() + FVector::LeftVector * BoxBoundsExtents / 3, GetActorLocation() + FVector::LeftVector * BoxBoundsExtents / 3 + FVector::DownVector * rayMultiplier, ECC_Visibility, CollisionQueryParams);
-	bHits[3] = GetWorld()->LineTraceSingleByChannel(OutHits[3], GetActorLocation() + FVector::RightVector * BoxBoundsExtents / 3, GetActorLocation() + FVector::RightVector * BoxBoundsExtents / 3 + FVector::DownVector * rayMultiplier, ECC_Visibility, CollisionQueryParams);
+	bHits[0] = GetWorld()->LineTraceSingleByChannel(OutHits[0], GetActorLocation() + FVector::LeftVector * BoxBoundsExtents /3, GetActorLocation() + FVector::LeftVector * BoxBoundsExtents / 3 + FVector::UpVector * RayMultiplier, ECC_Visibility, CollisionQueryParams);
+	bHits[1] = GetWorld()->LineTraceSingleByChannel(OutHits[1], GetActorLocation() + FVector::RightVector * BoxBoundsExtents / 3, GetActorLocation() + FVector::RightVector * BoxBoundsExtents / 3 + FVector::UpVector * RayMultiplier, ECC_Visibility, CollisionQueryParams);
+	bHits[2] = GetWorld()->LineTraceSingleByChannel(OutHits[2], GetActorLocation() + FVector::LeftVector * BoxBoundsExtents / 3, GetActorLocation() + FVector::LeftVector * BoxBoundsExtents / 3 + FVector::DownVector * RayMultiplier, ECC_Visibility, CollisionQueryParams);
+	bHits[3] = GetWorld()->LineTraceSingleByChannel(OutHits[3], GetActorLocation() + FVector::RightVector * BoxBoundsExtents / 3, GetActorLocation() + FVector::RightVector * BoxBoundsExtents / 3 + FVector::DownVector * RayMultiplier, ECC_Visibility, CollisionQueryParams);
 	bHits[4] = GetWorld()->LineTraceSingleByChannel(OutHits[4], GetActorLocation(), GetActorLocation() + FVector::LeftVector * RayMultiplier, ECC_Visibility, CollisionQueryParams);
 	bHits[5] = GetWorld()->LineTraceSingleByChannel(OutHits[5], GetActorLocation(), GetActorLocation() + FVector::RightVector * RayMultiplier, ECC_Visibility, CollisionQueryParams);
 
