@@ -8,6 +8,8 @@
 // Sets default values
 ADestructibleBox::ADestructibleBox()
 {
+	bReplicates = true;
+	
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -27,15 +29,15 @@ void ADestructibleBox::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	ColorValue = FMath::RandRange(1, 3);
+	//ColorValue = FMath::RandRange(1, 3);
 	
-	AActor * rootComponent = GetOwner();
+	AActor* RootComp = GetOwner();
 
-	UActorComponent* comp = GetComponentByClass(UStaticMeshComponent::StaticClass());
+	UActorComponent* Comp = GetComponentByClass(UStaticMeshComponent::StaticClass());
 
-	UStaticMeshComponent* SM = Cast<UStaticMeshComponent>(comp);
+	UStaticMeshComponent* SMC = Cast<UStaticMeshComponent>(Comp);
 	
-	if (SM != nullptr)
+	if (SMC != nullptr)
 	{
 		/*FHashedMaterialParameterInfo HashedMaterialParameterInfo;
 		HashedMaterialParameterInfo.Name = FString("DiffuseColor");*/
@@ -56,7 +58,7 @@ void ADestructibleBox::BeginPlay()
 			break;
 		}
 		
-		SM->SetVectorParameterValueOnMaterials("DiffuseColor", Vector);
+		SMC->SetVectorParameterValueOnMaterials("DiffuseColor", Vector);
 	}
 }
 
