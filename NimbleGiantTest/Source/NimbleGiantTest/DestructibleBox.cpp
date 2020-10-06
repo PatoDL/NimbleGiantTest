@@ -4,6 +4,8 @@
 #include "DestructibleBox.h"
 #include "Components/BoxComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Net/UnrealNetwork.h"
+#include "Engine/Engine.h"
 
 // Sets default values
 ADestructibleBox::ADestructibleBox()
@@ -24,25 +26,24 @@ ADestructibleBox::ADestructibleBox()
 	StaticMeshComponent->SetupAttachment(RootComponent);
 }
 
-// Called when the game starts or when spawned
-void ADestructibleBox::BeginPlay()
+void ADestructibleBox::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
-	Super::BeginPlay();
-	
-	//ColorValue = FMath::RandRange(1, 3);
-	
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	//Replicate current color.
+	DOREPLIFETIME(ADestructibleBox, ColorValue);
+}
+
+void ADestructibleBox::OnColorUpdate()
+{
 	AActor* RootComp = GetOwner();
 
 	UActorComponent* Comp = GetComponentByClass(UStaticMeshComponent::StaticClass());
 
 	UStaticMeshComponent* SMC = Cast<UStaticMeshComponent>(Comp);
-	
+
 	if (SMC != nullptr)
 	{
-		/*FHashedMaterialParameterInfo HashedMaterialParameterInfo;
-		HashedMaterialParameterInfo.Name = FString("DiffuseColor");*/
-		FLinearColor LinearColor;
-		//SM->GetMaterial(0)->GetVectorParameterValue(HashedMaterialParameterInfo, LinearColor);
 		FVector Vector;
 
 		switch (ColorValue)
@@ -57,7 +58,46 @@ void ADestructibleBox::BeginPlay()
 			Vector = (FVector)FColor::Green;
 			break;
 		}
-		
+
+		SMC->SetVectorParameterValueOnMaterials("DiffuseColor", Vector);
+	}
+}
+
+// Called when the game starts or when spawned
+void ADestructibleBox::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	//ColorValue = FMath::RandRange(1, 3);
+	
+	//StartBox();
+}
+
+void ADestructibleBox::StartBox_Implementation()
+{
+	AActor* RootComp = GetOwner();
+
+	UActorComponent* Comp = GetComponentByClass(UStaticMeshComponent::StaticClass());
+
+	UStaticMeshComponent* SMC = Cast<UStaticMeshComponent>(Comp);
+
+	if (SMC != nullptr)
+	{
+		FVector Vector;
+
+		switch (ColorValue)
+		{
+		case 1:
+			Vector = (FVector)FColor::Blue;
+			break;
+		case 2:
+			Vector = (FVector)FColor::Red;
+			break;
+		case 3:
+			Vector = (FVector)FColor::Green;
+			break;
+		}
+
 		SMC->SetVectorParameterValueOnMaterials("DiffuseColor", Vector);
 	}
 }
@@ -131,4 +171,9 @@ void ADestructibleBox::CascadeDestroy(uint32 &ScoreToAdd, uint16 FibonacciIndex)
 	}
 
 	Destroy();
+}
+
+void ADestructibleBox::OnRep_SwitchColor()
+{
+	OnColorUpdate();
 }

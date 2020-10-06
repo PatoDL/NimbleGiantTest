@@ -8,6 +8,7 @@
 // Sets default values
 ABoxSpawner::ABoxSpawner()
 {
+	bReplicates = true;
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -20,9 +21,19 @@ void ABoxSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (GetLocalRole() == ROLE_Authority)
+	{
+		SpawnPyramid();
+		SetBoxColors();
+	}
+	
+}
+
+void ABoxSpawner::SpawnPyramid_Implementation()
+{
 	FVector InitialPosition = GetActorLocation();
 
-	while(MaxAmount > 0)
+	while (MaxAmount > 0)
 	{
 		for (int i = MaxAmount; i > 0; i--)
 		{
@@ -31,27 +42,31 @@ void ABoxSpawner::BeginPlay()
 			Transform.SetLocation(GetActorLocation());
 			Transform.SetRotation(GetActorRotation().Quaternion());
 
-			ADestructibleBox* NewBox = GetWorld()->SpawnActorDeferred<ADestructibleBox>(Box, Transform);
-			NewBox->ColorValue = FMath::RandRange(1, 3);
-			UGameplayStatics::FinishSpawningActor(NewBox, Transform);
+			ADestructibleBox* NewBox = GetWorld()->SpawnActor<ADestructibleBox>(Box, Transform);
+			BoxArray.Add(NewBox);
 			FVector ActualLocation = GetActorLocation();
 			ActualLocation.Y += 100;
 			SetActorLocation(ActualLocation);
 		}
-		
+
 		InitialPosition.Z += 100;
 		InitialPosition.Y += 50;
 		SetActorLocation(InitialPosition);
 		MaxAmount--;
 	}
+}
 
-	Destroy();
+void ABoxSpawner::SetBoxColors_Implementation()
+{
+	for(int i=0;i < BoxArray.Num();i++)
+	{
+		BoxArray[i]->ColorValue = FMath::RandRange(1, 3);
+	}	
 }
 
 // Called every frame
 void ABoxSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 

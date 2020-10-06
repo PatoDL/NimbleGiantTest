@@ -23,10 +23,19 @@ public:
 
 	UPROPERTY(VisibleDefaultsOnly)
 	class UBoxComponent* CollisionComp;
+
+	TArray<ADestructibleBox*> BoxArray;
 	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION(Server, Reliable)
+	void SpawnPyramid();
+
+
+	UFUNCTION(Server, Reliable)
+	void SetBoxColors();
 
 public:	
 	// Called every frame
