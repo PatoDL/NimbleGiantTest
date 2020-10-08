@@ -39,14 +39,12 @@ ANimbleGiantTestProjectile::ANimbleGiantTestProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
-
-	
 }
 
 void ANimbleGiantTestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
+	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics() && GetLocalRole() == ROLE_Authority)
 	{
 		//OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
@@ -57,10 +55,10 @@ void ANimbleGiantTestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Oth
 			uint32 ScoreToAdd = 0;
 			uint16 FibonacciIndex = 1;
 			DestructibleBox->CascadeDestroy(ScoreToAdd, FibonacciIndex);
+			
 			ANimbleGiantTestCharacter* Character = Cast<ANimbleGiantTestCharacter>(GetOwner());
 			Character->GetPlayerState<ANimbleGiantTestPlayerState>()->AddScore(ScoreToAdd);
 		}
-		
 		Destroy();
 	}
 }

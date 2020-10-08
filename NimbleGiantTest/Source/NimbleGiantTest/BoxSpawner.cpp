@@ -26,7 +26,6 @@ void ABoxSpawner::BeginPlay()
 		SpawnPyramid();
 		SetBoxColors();
 	}
-	
 }
 
 void ABoxSpawner::SpawnPyramid_Implementation()

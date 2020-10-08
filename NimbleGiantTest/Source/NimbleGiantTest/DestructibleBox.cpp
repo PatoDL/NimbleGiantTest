@@ -5,7 +5,6 @@
 #include "Components/BoxComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Net/UnrealNetwork.h"
-#include "Engine/Engine.h"
 
 // Sets default values
 ADestructibleBox::ADestructibleBox()

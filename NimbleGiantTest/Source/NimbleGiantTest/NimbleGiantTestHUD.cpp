@@ -1,11 +1,14 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "NimbleGiantTestHUD.h"
+
+#include "Blueprint/UserWidget.h"
 #include "Engine/Canvas.h"
 #include "Engine/Texture2D.h"
 #include "TextureResource.h"
 #include "CanvasItem.h"
 #include "UObject/ConstructorHelpers.h"
+#include "ScoreWidget.h"
 
 ANimbleGiantTestHUD::ANimbleGiantTestHUD()
 {
@@ -32,4 +35,31 @@ void ANimbleGiantTestHUD::DrawHUD()
 	FCanvasTileItem TileItem( CrosshairDrawPosition, CrosshairTex->Resource, FLinearColor::White);
 	TileItem.BlendMode = SE_BLEND_Translucent;
 	Canvas->DrawItem( TileItem );
+}
+
+void ANimbleGiantTestHUD::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (HUDWidgetClass != nullptr)
+	{
+		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
+
+		if (CurrentWidget)
+		{
+			CurrentWidget->AddToViewport();
+		}
+	}
+}
+
+void ANimbleGiantTestHUD::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	UScoreWidget* ScoreWidget = Cast<UScoreWidget>(CurrentWidget);
+
+	if(ScoreWidget)
+	{
+		ScoreWidget->UpdateScore();
+	}
 }

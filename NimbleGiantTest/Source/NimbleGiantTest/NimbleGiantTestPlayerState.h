@@ -12,11 +12,15 @@
 UCLASS()
 class NIMBLEGIANTTEST_API ANimbleGiantTestPlayerState : public APlayerState
 {
+private:
 	GENERATED_BODY()
 	
 public:
-	void AddScore(int ScoreToAdd)
-	{
-		Score += ScoreToAdd;
-	}
+	UFUNCTION(Server, Reliable)
+	void AddScore(int ScoreToAdd);
+	
+	void OnRep_Score() override;
+	
+	UFUNCTION(Client, Reliable)
+	void OnScoreUpdate() const;
 };

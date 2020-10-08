@@ -17,9 +17,18 @@ public:
 	/** Primary draw call for the HUD */
 	virtual void DrawHUD() override;
 
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaSeconds) override;
+	
+	UPROPERTY(EditAnywhere, Category = "Score")
+	TSubclassOf<class UUserWidget> HUDWidgetClass;
+
+	UPROPERTY(EditAnywhere, Category = "Score")
+	class UUserWidget* CurrentWidget;
+	
 private:
 	/** Crosshair asset pointer */
 	class UTexture2D* CrosshairTex;
-
 };
 
