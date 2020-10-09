@@ -5,6 +5,8 @@
 #include "DestructibleBox.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NimbleGiantTestGameMode.h"
+
 // Sets default values
 ABoxSpawner::ABoxSpawner()
 {
@@ -32,6 +34,8 @@ void ABoxSpawner::SpawnPyramid_Implementation()
 {
 	FVector InitialPosition = GetActorLocation();
 
+	ANimbleGiantTestGameMode* GM = Cast<ANimbleGiantTestGameMode>(GetWorld()->GetAuthGameMode());
+	
 	while (MaxAmount > 0)
 	{
 		for (int i = MaxAmount; i > 0; i--)
@@ -42,7 +46,8 @@ void ABoxSpawner::SpawnPyramid_Implementation()
 			Transform.SetRotation(GetActorRotation().Quaternion());
 
 			ADestructibleBox* NewBox = GetWorld()->SpawnActor<ADestructibleBox>(Box, Transform);
-			BoxArray.Add(NewBox);
+			if (GM)
+				GM->AddBox(NewBox);
 			FVector ActualLocation = GetActorLocation();
 			ActualLocation.Y += 100;
 			SetActorLocation(ActualLocation);
@@ -57,10 +62,15 @@ void ABoxSpawner::SpawnPyramid_Implementation()
 
 void ABoxSpawner::SetBoxColors_Implementation()
 {
-	for(int i=0;i < BoxArray.Num();i++)
+	ANimbleGiantTestGameMode* GM = Cast<ANimbleGiantTestGameMode>(GetWorld()->GetAuthGameMode());
+
+	if (GM)
 	{
-		BoxArray[i]->ColorValue = FMath::RandRange(1, 3);
-	}	
+		for (int i = 0; i < GM->GetBoxCount(); i++)
+		{
+			GM->GetBox(i)->ColorValue = FMath::RandRange(1, 3);
+		}
+	}
 }
 
 // Called every frame

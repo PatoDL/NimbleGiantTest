@@ -22,10 +22,19 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 	
 	UPROPERTY(EditAnywhere, Category = "Score")
-	TSubclassOf<class UUserWidget> HUDWidgetClass;
+	TSubclassOf<class UUserWidget> ScoreWidgetClass;
 
 	UPROPERTY(EditAnywhere, Category = "Score")
-	class UUserWidget* CurrentWidget;
+	class UUserWidget* ScoreWidget;
+
+	UPROPERTY(EditAnywhere, Category = "End")
+	TSubclassOf<class UUserWidget> EndGameWidgetClass;
+
+	UPROPERTY(EditAnywhere, Category = "End")
+	class UUserWidget* EndGameWidget;
+	
+	UFUNCTION(Client, Reliable)
+	void ShowGameOver();
 	
 private:
 	/** Crosshair asset pointer */

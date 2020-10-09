@@ -5,7 +5,6 @@
 #include "Blueprint/UserWidget.h"
 #include "Engine/Canvas.h"
 #include "Engine/Texture2D.h"
-#include "TextureResource.h"
 #include "CanvasItem.h"
 #include "UObject/ConstructorHelpers.h"
 #include "ScoreWidget.h"
@@ -41,13 +40,24 @@ void ANimbleGiantTestHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (HUDWidgetClass != nullptr)
+	if (ScoreWidgetClass != nullptr)
 	{
-		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
+		ScoreWidget = CreateWidget<UUserWidget>(GetWorld(), ScoreWidgetClass);
 
-		if (CurrentWidget)
+		if (ScoreWidget)
 		{
-			CurrentWidget->AddToViewport();
+			ScoreWidget->AddToViewport();
+		}
+	}
+
+	if(EndGameWidgetClass != nullptr)
+	{
+		EndGameWidget = CreateWidget<UUserWidget>(GetWorld(), EndGameWidgetClass);
+
+		if (EndGameWidget)
+		{
+			EndGameWidget->AddToViewport();
+			EndGameWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }
@@ -56,10 +66,15 @@ void ANimbleGiantTestHUD::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	UScoreWidget* ScoreWidget = Cast<UScoreWidget>(CurrentWidget);
+	UScoreWidget* NewScoreWidget = Cast<UScoreWidget>(ScoreWidget);
 
-	if(ScoreWidget)
+	if(NewScoreWidget)
 	{
-		ScoreWidget->UpdateScore();
+		NewScoreWidget->UpdateScore();
 	}
+}
+
+void ANimbleGiantTestHUD::ShowGameOver_Implementation()
+{
+	EndGameWidget->SetVisibility(ESlateVisibility::Visible);
 }

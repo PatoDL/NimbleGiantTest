@@ -15,5 +15,4 @@ void UScoreWidget::UpdateScore()
 	{
 		ScoreText->SetText(FText::FromString(FString("Your score is: ")+FString::SanitizeFloat(ActualState->GetScore(), 0)));
 	}
-		
 }

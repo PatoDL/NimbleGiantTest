@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Net/UnrealNetwork.h"
+#include "NimbleGiantTestGameMode.h"
 
 // Sets default values
 ADestructibleBox::ADestructibleBox()
@@ -169,6 +170,16 @@ void ADestructibleBox::CascadeDestroy(uint32 &ScoreToAdd, uint16 FibonacciIndex)
 		}
 	}
 
+
+	ANimbleGiantTestGameMode* GM = Cast<ANimbleGiantTestGameMode>(GetWorld()->GetAuthGameMode());
+	if(GM)
+	{
+		GM->RemoveBox(this);
+		if(GM->GetBoxCount() == 0)
+		{
+			GM->EndGame();
+		}
+	}
 	Destroy();
 }
 

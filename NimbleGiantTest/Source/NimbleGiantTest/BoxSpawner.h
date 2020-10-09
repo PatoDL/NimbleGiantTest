@@ -24,7 +24,7 @@ public:
 	UPROPERTY(VisibleDefaultsOnly)
 	class UBoxComponent* CollisionComp;
 
-	TArray<ADestructibleBox*> BoxArray;
+	
 	
 protected:
 	// Called when the game starts or when spawned

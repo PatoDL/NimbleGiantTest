@@ -18,8 +18,7 @@ void ANimbleGiantTestPlayerState::OnRep_Score()
 
 void ANimbleGiantTestPlayerState::OnScoreUpdate_Implementation() const
 {
-	AActor* O = GetOwner();
-	APlayerController* PC = Cast<APlayerController>(O);
+	
 	//PC->GetHUD<ANimbleGiantTestHUD>()
 }
 
