@@ -7,14 +7,28 @@
 #include "NimbleGiantTestHUD.h"
 #include "NimbleGiantTestGameMode.h"
 
+void ANimbleGiantTestGameState::UpdateHUD_Implementation()
+{
+	if(GetLocalRole() < ROLE_Authority || GetNetMode() != NM_DedicatedServer)
+	{
+		for (int i = 0; i < PlayerArray.Num(); i++)
+		{
+			AActor* O = PlayerArray[i]->GetOwner();
+			APlayerController* PlayerController = Cast<APlayerController>(O);
+			if (PlayerController != nullptr)
+				PlayerController->GetHUD<ANimbleGiantTestHUD>()->ShowGameOver();
+		}
+	}
+}
+
 void ANimbleGiantTestGameState::ResetPlayers_Implementation()
 {
 	if (GetLocalRole() == ROLE_Authority)
 	{
 		for (int i = 0; i < PlayerArray.Num(); i++)
 		{
-			AController* PC = Cast<AController>(PlayerArray[i]->GetOwner());
-			GetWorld()->GetAuthGameMode<ANimbleGiantTestGameMode>()->RestartPlayer(PC);
+			APlayerController* PlayerController = Cast<APlayerController>(PlayerArray[i]->GetOwner());
+			PlayerController->ClientTravel("127.0.0.1", ETravelType::TRAVEL_Absolute);
 		}
 	}
 }
@@ -65,14 +79,5 @@ void ANimbleGiantTestGameState::RemoveBox(ADestructibleBox* Box)
 
 void ANimbleGiantTestGameState::EndGame_Implementation()
 {
-	if (GetLocalRole() < ROLE_Authority || GetNetMode() != NM_DedicatedServer)
-	{
-		for (int i = 0; i < PlayerArray.Num(); i++)
-		{
-			AActor* O = PlayerArray[i]->GetOwner();
-			APlayerController* PC = Cast<APlayerController>(O);
-			if (PC != nullptr)
-				PC->GetHUD<ANimbleGiantTestHUD>()->ShowGameOver();
-		}
-	}
+	UpdateHUD();
 }

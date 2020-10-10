@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Net/UnrealNetwork.h"
+#include "NimbleGiantTestGameMode.h"
 #include "Components/StaticMeshComponent.h"
 #include "NimbleGiantTestGameState.h"
 

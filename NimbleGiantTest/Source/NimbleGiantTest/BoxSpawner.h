@@ -30,7 +30,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	
+	UFUNCTION(Server, Reliable)
+	void SpawnPyramid();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -38,6 +39,4 @@ public:
 
 	UFUNCTION(Server, Reliable)
 	void SetBoxColors();
-	UFUNCTION(Server, Reliable)
-	void SpawnPyramid();
 };

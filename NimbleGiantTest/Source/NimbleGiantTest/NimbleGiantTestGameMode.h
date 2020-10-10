@@ -18,10 +18,10 @@ public:
 	ANimbleGiantTestGameMode();
 
 
-	void StartMatch() override;
+
+
 
 	UFUNCTION(Server, Reliable)
 	void ResetGame();
 	
-	void RestartPlayer(AController* NewPlayer) override;
 };

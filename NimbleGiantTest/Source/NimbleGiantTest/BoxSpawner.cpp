@@ -23,7 +23,7 @@ void ABoxSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (/*GetLocalRole() == ROLE_Authority &&*/ GetNetMode() != NM_DedicatedServer)
+	if (GetLocalRole() == ROLE_Authority || GetNetMode() != NM_DedicatedServer)
 	{
 		SpawnPyramid();
 		SetBoxColors();
