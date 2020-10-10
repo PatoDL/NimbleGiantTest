@@ -6,7 +6,7 @@
 #include "NimbleGiantTestPlayerState.h"
 #include "NimbleGiantTestGameState.h"
 #include "Kismet/GameplayStatics.h"
-#include "GameFramework/GameSession.h"
+#include "BoxSpawner.h"
 
 ANimbleGiantTestGameMode::ANimbleGiantTestGameMode()
 	: Super()
@@ -23,14 +23,36 @@ ANimbleGiantTestGameMode::ANimbleGiantTestGameMode()
 	GameStateClass = ANimbleGiantTestGameState::StaticClass();
 }
 
+void ANimbleGiantTestGameMode::StartMatch()
+{
+	Super::StartMatch();
 
+	AActor* BoxSpawnerActor = UGameplayStatics::GetActorOfClass(this, ABoxSpawner::StaticClass());
+
+	if(BoxSpawnerActor != nullptr)
+	{
+		ABoxSpawner* BoxSpawner = Cast<ABoxSpawner>(BoxSpawnerActor);
+
+		BoxSpawner->SpawnPyramid();
+		BoxSpawner->SetBoxColors();
+	}
+}
+
+void ANimbleGiantTestGameMode::RestartPlayer(AController* NewPlayer)
+{
+	Super::RestartPlayer(NewPlayer);
+
+	APlayerController* PlayerController = Cast<APlayerController>(NewPlayer);
+	
+	if (PlayerController != nullptr)
+	{
+		PlayerController->ClientTravel("IPADDRESS", ETravelType::TRAVEL_Absolute);
+	}
+}
 
 void ANimbleGiantTestGameMode::ResetGame_Implementation()
 {
-	if (GetMatchState() == MatchState::LeavingMap)
-	{
-		return;
-	}
-	GetWorld()->ServerTravel("?Restart", true);
+	//GetWorld()->ServerTravel("?Restart", true);
+	UGameplayStatics::OpenLevel(this, "?", true, "listen");
 	GetGameState<ANimbleGiantTestGameState>()->PauseGamePlay(false);
 }
