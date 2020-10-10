@@ -31,10 +31,15 @@ void ANimbleGiantTestGameMode::ResetGame_Implementation()
 	}
 	GetWorld()->ServerTravel("?Restart", true);*/
 
-	if(GetLocalRole() == ROLE_Authority)
+	if(GetLocalRole() == ROLE_Authority && GetNetMode() == NM_DedicatedServer)
 	{
 		UGameplayStatics::OpenLevel(this, "?", true, "listen");
 		GetGameState<ANimbleGiantTestGameState>()->ResetPlayers();
+		GetGameState<ANimbleGiantTestGameState>()->PauseGamePlay(false);
+	}
+	else if(GetNetMode() != NM_DedicatedServer)
+	{
+		UGameplayStatics::OpenLevel(this, "?");
 		GetGameState<ANimbleGiantTestGameState>()->PauseGamePlay(false);
 	}
 }
