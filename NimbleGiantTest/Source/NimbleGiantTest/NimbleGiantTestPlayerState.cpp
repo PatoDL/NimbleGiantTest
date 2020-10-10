@@ -2,9 +2,9 @@
 
 
 #include "NimbleGiantTestPlayerState.h"
-#include "Engine/Engine.h"
-#include "Net/UnrealNetwork.h"
-#include "NimbleGiantTestHUD.h"
+
+#include "NimbleGiantTestGameState.h"
+
 
 void ANimbleGiantTestPlayerState::OnRep_Score()
 {
@@ -14,6 +14,16 @@ void ANimbleGiantTestPlayerState::OnRep_Score()
 	
 	if(TheOwner != nullptr)
 		OnScoreUpdate();
+}
+
+void ANimbleGiantTestPlayerState::AskForRestart_Implementation()
+{
+	ANimbleGiantTestGameState* GS = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
+
+	if(GS)
+	{
+		GS->CallRestartGame();
+	}
 }
 
 void ANimbleGiantTestPlayerState::OnScoreUpdate_Implementation() const

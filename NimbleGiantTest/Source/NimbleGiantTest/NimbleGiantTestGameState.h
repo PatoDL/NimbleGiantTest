@@ -10,11 +10,20 @@
  * 
  */
 UCLASS()
-class NIMBLEGIANTTEST_API ANimbleGiantTestGameState : public AGameStateBase
+class NIMBLEGIANTTEST_API ANimbleGiantTestGameState : public AGameState
 {
 	GENERATED_BODY()
 
 public:
 	UFUNCTION(NetMulticast, Reliable)
 	void UpdateHUD();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void PauseGamePlay(bool ShouldPause);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void CallRestartGame();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void ResetPlayers();
 };

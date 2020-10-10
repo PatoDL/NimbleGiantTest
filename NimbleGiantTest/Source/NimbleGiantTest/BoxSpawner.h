@@ -32,13 +32,11 @@ protected:
 
 	UFUNCTION(Server, Reliable)
 	void SpawnPyramid();
-
-
-	UFUNCTION(Server, Reliable)
-	void SetBoxColors();
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	FORCEINLINE class UBoxComponent* GetCollisionComponent() const { return CollisionComp; }
+
+	UFUNCTION(Server, Reliable)
+	void SetBoxColors();
 };

@@ -8,6 +8,7 @@
 #include "CanvasItem.h"
 #include "UObject/ConstructorHelpers.h"
 #include "ScoreWidget.h"
+#include "NimbleGiantTestGameState.h"
 
 ANimbleGiantTestHUD::ANimbleGiantTestHUD()
 {
@@ -76,5 +77,10 @@ void ANimbleGiantTestHUD::Tick(float DeltaSeconds)
 
 void ANimbleGiantTestHUD::ShowGameOver_Implementation()
 {
-	EndGameWidget->SetVisibility(ESlateVisibility::Visible);
+	if(EndGameWidget)
+		EndGameWidget->SetVisibility(ESlateVisibility::Visible);
+	if (ScoreWidget)
+		ScoreWidget->SetVisibility(ESlateVisibility::Hidden);
+	
+	GetWorld()->GetGameState<ANimbleGiantTestGameState>()->PauseGamePlay(true);
 }

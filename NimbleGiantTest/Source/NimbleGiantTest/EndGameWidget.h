@@ -17,4 +17,12 @@ class NIMBLEGIANTTEST_API UEndGameWidget : public UUserWidget
 protected:
 	UPROPERTY(meta = (BindWidget))
 	TArray<class UTextBlock*> Scores;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* RestartButton;
+
+	void NativeOnInitialized() override;
+
+	UFUNCTION(Server, Reliable)
+	void CallRestartGame();
 };

@@ -171,6 +171,8 @@ void ANimbleGiantTestCharacter::OnFire_Implementation()
 		}
 	}
 
+	
+	
 	// try and play the sound if specified
 	if (FireSound != NULL)
 	{

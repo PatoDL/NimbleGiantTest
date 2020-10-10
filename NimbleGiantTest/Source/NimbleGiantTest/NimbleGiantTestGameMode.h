@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "DestructibleBox.h"
-#include "GameFramework/GameModeBase.h"
+#include "GameFramework/GameMode.h"
 #include "NimbleGiantTestGameMode.generated.h"
 
 UCLASS(minimalapi)
-class ANimbleGiantTestGameMode : public AGameModeBase
+class ANimbleGiantTestGameMode : public AGameMode
 {
 	GENERATED_BODY()
 
@@ -37,4 +37,9 @@ public:
 
 	UFUNCTION(Server, Reliable)
 	void EndGame();
+
+	UFUNCTION(Server, Reliable)
+	void ResetGame();
+
+	
 };

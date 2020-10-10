@@ -13,7 +13,6 @@ UCLASS()
 class NIMBLEGIANTTEST_API UScoreWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
 protected:
 
 	UPROPERTY(meta = (BindWidget))

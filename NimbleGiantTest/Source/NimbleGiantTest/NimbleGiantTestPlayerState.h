@@ -23,4 +23,7 @@ public:
 	
 	UFUNCTION(Client, Reliable)
 	void OnScoreUpdate() const;
+
+	UFUNCTION(Server, Reliable)
+	void AskForRestart();
 };

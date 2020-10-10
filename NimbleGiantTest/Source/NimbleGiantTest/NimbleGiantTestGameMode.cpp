@@ -5,6 +5,8 @@
 #include "UObject/ConstructorHelpers.h"
 #include "NimbleGiantTestPlayerState.h"
 #include "NimbleGiantTestGameState.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/GameSession.h"
 
 ANimbleGiantTestGameMode::ANimbleGiantTestGameMode()
 	: Super()
@@ -29,6 +31,16 @@ void ANimbleGiantTestGameMode::AddBox(ADestructibleBox* Box)
 void ANimbleGiantTestGameMode::RemoveBox(ADestructibleBox* Box)
 {
 	BoxArray.Remove(Box);
+}
+
+void ANimbleGiantTestGameMode::ResetGame_Implementation()
+{
+	if (GetMatchState() == MatchState::LeavingMap)
+	{
+		return;
+	}
+	GetWorld()->ServerTravel("?Restart", true);
+	GetGameState<ANimbleGiantTestGameState>()->PauseGamePlay(false);
 }
 
 void ANimbleGiantTestGameMode::EndGame_Implementation()
