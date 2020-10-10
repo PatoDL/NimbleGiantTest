@@ -14,6 +14,7 @@ class NIMBLEGIANTTEST_API ANimbleGiantTestGameState : public AGameState
 {
 	GENERATED_BODY()
 
+	TArray<class ADestructibleBox*> BoxArray;
 public:
 	UFUNCTION(NetMulticast, Reliable)
 	void UpdateHUD();
@@ -26,4 +27,25 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void ResetPlayers();
+
+	UFUNCTION()
+	void AddBox(ADestructibleBox* box);
+
+	UFUNCTION()
+	FORCEINLINE int32 GetBoxCount()
+	{
+		return BoxArray.Num();
+	}
+
+	UFUNCTION()
+	FORCEINLINE ADestructibleBox* GetBox(int32 Index)
+	{
+		return BoxArray[Index];
+	}
+
+	UFUNCTION()
+	void RemoveBox(ADestructibleBox* Box);
+
+	UFUNCTION(Server, Reliable)
+	void EndGame();
 };

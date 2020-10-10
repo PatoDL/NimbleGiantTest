@@ -5,7 +5,7 @@
 #include "DestructibleBox.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "NimbleGiantTestGameMode.h"
+#include "NimbleGiantTestGameState.h"
 
 // Sets default values
 ABoxSpawner::ABoxSpawner()
@@ -23,7 +23,7 @@ void ABoxSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (GetLocalRole() == ROLE_Authority)
+	if (GetLocalRole() == ROLE_Authority || GetNetMode() != NM_DedicatedServer)
 	{
 		SpawnPyramid();
 		SetBoxColors();
@@ -34,7 +34,7 @@ void ABoxSpawner::SpawnPyramid_Implementation()
 {
 	FVector InitialPosition = GetActorLocation();
 
-	ANimbleGiantTestGameMode* GM = Cast<ANimbleGiantTestGameMode>(GetWorld()->GetAuthGameMode());
+	ANimbleGiantTestGameState* GameState = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
 	
 	while (MaxAmount > 0)
 	{
@@ -46,8 +46,8 @@ void ABoxSpawner::SpawnPyramid_Implementation()
 			Transform.SetRotation(GetActorRotation().Quaternion());
 
 			ADestructibleBox* NewBox = GetWorld()->SpawnActor<ADestructibleBox>(Box, Transform);
-			if (GM)
-				GM->AddBox(NewBox);
+			if (GameState)
+				GameState->AddBox(NewBox);
 			FVector ActualLocation = GetActorLocation();
 			ActualLocation.Y += 100;
 			SetActorLocation(ActualLocation);
@@ -62,13 +62,17 @@ void ABoxSpawner::SpawnPyramid_Implementation()
 
 void ABoxSpawner::SetBoxColors_Implementation()
 {
-	ANimbleGiantTestGameMode* GM = Cast<ANimbleGiantTestGameMode>(GetWorld()->GetAuthGameMode());
+	ANimbleGiantTestGameState* GameState = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
 
-	if (GM)
+	if (GameState)
 	{
-		for (int i = 0; i < GM->GetBoxCount(); i++)
+		for (int i = 0; i < GameState->GetBoxCount(); i++)
 		{
-			GM->GetBox(i)->ColorValue = FMath::RandRange(1, 3);
+			GameState->GetBox(i)->ColorValue = FMath::RandRange(1, 3);
+			if(GetNetMode() != NM_DedicatedServer)
+			{
+				GameState->GetBox(i)->OnColorUpdate();
+			}
 		}
 	}
 }

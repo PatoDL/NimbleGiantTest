@@ -23,15 +23,7 @@ ANimbleGiantTestGameMode::ANimbleGiantTestGameMode()
 	GameStateClass = ANimbleGiantTestGameState::StaticClass();
 }
 
-void ANimbleGiantTestGameMode::AddBox(ADestructibleBox* Box)
-{
-	BoxArray.Add(Box);
-}
 
-void ANimbleGiantTestGameMode::RemoveBox(ADestructibleBox* Box)
-{
-	BoxArray.Remove(Box);
-}
 
 void ANimbleGiantTestGameMode::ResetGame_Implementation()
 {
@@ -41,9 +33,4 @@ void ANimbleGiantTestGameMode::ResetGame_Implementation()
 	}
 	GetWorld()->ServerTravel("?Restart", true);
 	GetGameState<ANimbleGiantTestGameState>()->PauseGamePlay(false);
-}
-
-void ANimbleGiantTestGameMode::EndGame_Implementation()
-{
-	GetGameState<ANimbleGiantTestGameState>()->UpdateHUD();
 }

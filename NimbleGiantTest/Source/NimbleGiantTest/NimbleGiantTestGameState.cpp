@@ -9,7 +9,7 @@
 
 void ANimbleGiantTestGameState::UpdateHUD_Implementation()
 {
-	if(GetLocalRole() < ROLE_Authority)
+	if(GetLocalRole() < ROLE_Authority || GetNetMode() != NM_DedicatedServer)
 	{
 		for (int i = 0; i < PlayerArray.Num(); i++)
 		{
@@ -65,4 +65,19 @@ void ANimbleGiantTestGameState::PauseGamePlay_Implementation(bool ShouldPause)
 			}
 		}
 	}
+}
+
+void ANimbleGiantTestGameState::AddBox(ADestructibleBox* Box)
+{
+	BoxArray.Add(Box);
+}
+
+void ANimbleGiantTestGameState::RemoveBox(ADestructibleBox* Box)
+{
+	BoxArray.Remove(Box);
+}
+
+void ANimbleGiantTestGameState::EndGame_Implementation()
+{
+	UpdateHUD();
 }

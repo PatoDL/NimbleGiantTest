@@ -6,6 +6,8 @@
 #include "DrawDebugHelpers.h"
 #include "Net/UnrealNetwork.h"
 #include "NimbleGiantTestGameMode.h"
+#include "Components/StaticMeshComponent.h"
+#include "NimbleGiantTestGameState.h"
 
 // Sets default values
 ADestructibleBox::ADestructibleBox()
@@ -18,7 +20,7 @@ ADestructibleBox::ADestructibleBox()
 	CollisionComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollisionComponent"));
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BoxMeshComponent"));
-
+	
 	//CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
 	// Set as root component
 	RootComponent = CollisionComponent;
@@ -69,8 +71,6 @@ void ADestructibleBox::BeginPlay()
 	Super::BeginPlay();
 	
 	//ColorValue = FMath::RandRange(1, 3);
-	
-	//StartBox();
 }
 
 void ADestructibleBox::StartBox_Implementation()
@@ -171,13 +171,13 @@ void ADestructibleBox::CascadeDestroy(uint32 &ScoreToAdd, uint16 FibonacciIndex)
 	}
 
 
-	ANimbleGiantTestGameMode* GM = Cast<ANimbleGiantTestGameMode>(GetWorld()->GetAuthGameMode());
-	if(GM)
+	ANimbleGiantTestGameState* GameState = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
+	if(GameState)
 	{
-		GM->RemoveBox(this);
-		if(GM->GetBoxCount() == 0)
+		GameState->RemoveBox(this);
+		if(GameState->GetBoxCount() == 0)
 		{
-			GM->EndGame();
+			GameState->EndGame();
 		}
 	}
 	Destroy();
