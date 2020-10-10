@@ -14,8 +14,8 @@ ABoxSpawner::ABoxSpawner()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	CollisionComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollisionComponent"));
-	RootComponent = CollisionComp;
+	CollisionComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollisionComponent"));
+	RootComponent = CollisionComponent;
 }
 
 // Called when the game starts or when spawned
@@ -36,9 +36,9 @@ void ABoxSpawner::SpawnPyramid_Implementation()
 
 	ANimbleGiantTestGameState* GameState = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
 	
-	while (MaxAmount > 0)
+	while (BaseBoxAmount > 0)
 	{
-		for (int i = MaxAmount; i > 0; i--)
+		for (int i = BaseBoxAmount; i > 0; i--)
 		{
 			//GetWorld()->SpawnActor(Box, Loc, Rot);
 			FTransform Transform;
@@ -56,7 +56,7 @@ void ABoxSpawner::SpawnPyramid_Implementation()
 		InitialPosition.Z += 100;
 		InitialPosition.Y += 50;
 		SetActorLocation(InitialPosition);
-		MaxAmount--;
+		BaseBoxAmount--;
 	}
 }
 

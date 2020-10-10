@@ -17,9 +17,6 @@ class NIMBLEGIANTTEST_API ANimbleGiantTestGameState : public AGameState
 	TArray<class ADestructibleBox*> BoxArray;
 public:
 	UFUNCTION(NetMulticast, Reliable)
-	void UpdateHUD();
-
-	UFUNCTION(NetMulticast, Reliable)
 	void PauseGamePlay(bool ShouldPause);
 
 	UFUNCTION(NetMulticast, Reliable)
@@ -46,6 +43,6 @@ public:
 	UFUNCTION()
 	void RemoveBox(ADestructibleBox* Box);
 
-	UFUNCTION(Server, Reliable)
+	UFUNCTION(NetMulticast, Reliable)
 	void EndGame();
 };

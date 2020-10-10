@@ -42,9 +42,6 @@ public:
 	FORCEINLINE class UBoxComponent* GetCollisionComponent() const { return CollisionComponent; }
 	void CascadeDestroy(uint32 &ScoreToAdd, uint16 FibonacciIndex);
 
-	UFUNCTION(Server, Reliable)
-	void StartBox();
-
 	UFUNCTION()
 	void OnRep_SwitchColor();
 };

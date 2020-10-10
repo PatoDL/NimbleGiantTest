@@ -7,20 +7,6 @@
 #include "NimbleGiantTestHUD.h"
 #include "NimbleGiantTestGameMode.h"
 
-void ANimbleGiantTestGameState::UpdateHUD_Implementation()
-{
-	if(GetLocalRole() < ROLE_Authority || GetNetMode() != NM_DedicatedServer)
-	{
-		for (int i = 0; i < PlayerArray.Num(); i++)
-		{
-			AActor* O = PlayerArray[i]->GetOwner();
-			APlayerController* PlayerController = Cast<APlayerController>(O);
-			if (PlayerController != nullptr)
-				PlayerController->GetHUD<ANimbleGiantTestHUD>()->ShowGameOver();
-		}
-	}
-}
-
 void ANimbleGiantTestGameState::ResetPlayers_Implementation()
 {
 	if (GetLocalRole() == ROLE_Authority)
@@ -79,5 +65,14 @@ void ANimbleGiantTestGameState::RemoveBox(ADestructibleBox* Box)
 
 void ANimbleGiantTestGameState::EndGame_Implementation()
 {
-	UpdateHUD();
+	if (GetLocalRole() < ROLE_Authority || GetNetMode() != NM_DedicatedServer)
+	{
+		for (int i = 0; i < PlayerArray.Num(); i++)
+		{
+			AActor* O = PlayerArray[i]->GetOwner();
+			APlayerController* PlayerController = Cast<APlayerController>(O);
+			if (PlayerController != nullptr)
+				PlayerController->GetHUD<ANimbleGiantTestHUD>()->ShowGameOver();
+		}
+	}
 }

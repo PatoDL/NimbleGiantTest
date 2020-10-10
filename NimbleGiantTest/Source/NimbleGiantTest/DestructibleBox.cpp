@@ -21,7 +21,6 @@ ADestructibleBox::ADestructibleBox()
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BoxMeshComponent"));
 	
-	//CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
 	// Set as root component
 	RootComponent = CollisionComponent;
 
@@ -38,13 +37,7 @@ void ADestructibleBox::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 void ADestructibleBox::OnColorUpdate()
 {
-	AActor* RootComp = GetOwner();
-
-	UActorComponent* Comp = GetComponentByClass(UStaticMeshComponent::StaticClass());
-
-	UStaticMeshComponent* SMC = Cast<UStaticMeshComponent>(Comp);
-
-	if (SMC != nullptr)
+	if (StaticMeshComponent != nullptr)
 	{
 		FVector Vector;
 
@@ -61,7 +54,7 @@ void ADestructibleBox::OnColorUpdate()
 			break;
 		}
 
-		SMC->SetVectorParameterValueOnMaterials("DiffuseColor", Vector);
+		StaticMeshComponent->SetVectorParameterValueOnMaterials("DiffuseColor", Vector);
 	}
 }
 
@@ -69,37 +62,6 @@ void ADestructibleBox::OnColorUpdate()
 void ADestructibleBox::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	//ColorValue = FMath::RandRange(1, 3);
-}
-
-void ADestructibleBox::StartBox_Implementation()
-{
-	AActor* RootComp = GetOwner();
-
-	UActorComponent* Comp = GetComponentByClass(UStaticMeshComponent::StaticClass());
-
-	UStaticMeshComponent* SMC = Cast<UStaticMeshComponent>(Comp);
-
-	if (SMC != nullptr)
-	{
-		FVector Vector;
-
-		switch (ColorValue)
-		{
-		case 1:
-			Vector = (FVector)FColor::Blue;
-			break;
-		case 2:
-			Vector = (FVector)FColor::Red;
-			break;
-		case 3:
-			Vector = (FVector)FColor::Green;
-			break;
-		}
-
-		SMC->SetVectorParameterValueOnMaterials("DiffuseColor", Vector);
-	}
 }
 
 // Called every frame

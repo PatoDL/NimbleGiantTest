@@ -19,24 +19,21 @@ public:
 	TSubclassOf<class ADestructibleBox> Box;
 	
 	UPROPERTY(EditAnywhere, Category=Implementation)
-	int32 MaxAmount;
+	int32 BaseBoxAmount;
 
 	UPROPERTY(VisibleDefaultsOnly)
-	class UBoxComponent* CollisionComp;
-
-	
-	
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	class UBoxComponent* CollisionComponent;
 
 	UFUNCTION(Server, Reliable)
 	void SpawnPyramid();
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-	FORCEINLINE class UBoxComponent* GetCollisionComponent() const { return CollisionComp; }
 
 	UFUNCTION(Server, Reliable)
 	void SetBoxColors();
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+	FORCEINLINE class UBoxComponent* GetCollisionComponent() const { return CollisionComponent; }
 };

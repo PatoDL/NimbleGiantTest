@@ -25,12 +25,6 @@ ANimbleGiantTestGameMode::ANimbleGiantTestGameMode()
 
 void ANimbleGiantTestGameMode::ResetGame_Implementation()
 {
-	/*if (GetMatchState() == MatchState::LeavingMap)
-	{
-		return;
-	}
-	GetWorld()->ServerTravel("?Restart", true);*/
-
 	if(GetLocalRole() == ROLE_Authority && GetNetMode() == NM_DedicatedServer)
 	{
 		UGameplayStatics::OpenLevel(this, "?", true, "listen");
