@@ -80,6 +80,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint32 bUsingMotionControllers : 1;
 
+	UFUNCTION(Client, Reliable)
+	void PlayEffects(FVector Location);
+
 protected:
 	
 	/** Fires a projectile. */

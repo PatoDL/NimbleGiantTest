@@ -47,7 +47,7 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void EndGame();
-
+	
 	UFUNCTION()
 	TArray<int32> GetScores();
 };

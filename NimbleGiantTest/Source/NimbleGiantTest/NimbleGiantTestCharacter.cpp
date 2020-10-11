@@ -166,27 +166,34 @@ void ANimbleGiantTestCharacter::OnFire_Implementation()
 				// spawn the projectile at the muzzle
 				ANimbleGiantTestProjectile* Projectile = World->SpawnActor<ANimbleGiantTestProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 				if(Projectile)
+				{
 					Projectile->SetOwner(this);
+					PlayEffects(GetActorLocation());
+				}	
 			}
 		}
 	}
+}
 
-	
-	
-	// try and play the sound if specified
-	if (FireSound != NULL)
+void ANimbleGiantTestCharacter::PlayEffects_Implementation(FVector Location)
+{
+	if(GetLocalRole() < ROLE_Authority || GetNetMode() == NM_Standalone)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	}
-
-	// try and play a firing animation if specified
-	if (FireAnimation != NULL)
-	{
-		// Get the animation object for the arms mesh
-		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-		if (AnimInstance != NULL)
+		// try and play the sound if specified
+		if (FireSound != NULL)
 		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
+			UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+		}
+
+		// try and play a firing animation if specified
+		if (FireAnimation != NULL)
+		{
+			// Get the animation object for the arms mesh
+			UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+			if (AnimInstance != NULL)
+			{
+				AnimInstance->Montage_Play(FireAnimation, 1.f);
+			}
 		}
 	}
 }

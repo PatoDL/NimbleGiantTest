@@ -85,8 +85,8 @@ void ANimbleGiantTestGameState::EndGame_Implementation()
 	{	
 		for (int32 i = 0; i < PlayerArray.Num(); i++)
 		{
-			AActor* O = PlayerArray[i]->GetOwner();
-			APlayerController* PlayerController = Cast<APlayerController>(O);
+			AActor* ActualActor = PlayerArray[i]->GetOwner();
+			APlayerController* PlayerController = Cast<APlayerController>(ActualActor);
 			if (PlayerController != nullptr)
 				PlayerController->GetHUD<ANimbleGiantTestHUD>()->ShowGameOver();
 		}

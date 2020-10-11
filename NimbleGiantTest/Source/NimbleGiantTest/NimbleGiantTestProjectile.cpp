@@ -57,7 +57,7 @@ void ANimbleGiantTestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Oth
 			
 			ANimbleGiantTestCharacter* Character = Cast<ANimbleGiantTestCharacter>(GetOwner());
 			Character->GetPlayerState<ANimbleGiantTestPlayerState>()->AddScore(ScoreToAdd);
-
+			
 			if(GetNetMode() != NM_DedicatedServer)
 			{
 				ANimbleGiantTestGameState* GameState = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
