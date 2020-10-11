@@ -14,15 +14,26 @@ class NIMBLEGIANTTEST_API UEndGameWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+	TArray<float> Scores;
+
+
 protected:
 	UPROPERTY(meta = (BindWidget))
-	TArray<class UTextBlock*> Scores;
+	class UButton* RestartButton;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* RestartButton;
+	class UVerticalBox* ScoresBox;
 
 	void NativeOnInitialized() override;
 
 	UFUNCTION(Server, Reliable)
 	void CallRestartGame();
+
+public:
+
+	UFUNCTION()
+		void GetScores(TArray<float> GotScores);
+
+	UFUNCTION()
+		void DrawScores();
 };
