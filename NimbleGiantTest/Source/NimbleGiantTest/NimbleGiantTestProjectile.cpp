@@ -6,6 +6,7 @@
 #include "DestructibleBox.h"
 #include "Kismet/GameplayStatics.h"
 #include "NimbleGiantTestCharacter.h"
+#include "NimbleGiantTestGameState.h"
 #include "NimbleGiantTestPlayerState.h"
 
 ANimbleGiantTestProjectile::ANimbleGiantTestProjectile() 
@@ -46,11 +47,9 @@ void ANimbleGiantTestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Oth
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics() && GetLocalRole() == ROLE_Authority)
 	{
-		//OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-
 		ADestructibleBox* DestructibleBox = Cast<ADestructibleBox>(OtherActor);
 
-		if(DestructibleBox)
+		if(DestructibleBox != nullptr)
 		{
 			uint32 ScoreToAdd = 0;
 			uint16 FibonacciIndex = 1;
@@ -58,6 +57,15 @@ void ANimbleGiantTestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Oth
 			
 			ANimbleGiantTestCharacter* Character = Cast<ANimbleGiantTestCharacter>(GetOwner());
 			Character->GetPlayerState<ANimbleGiantTestPlayerState>()->AddScore(ScoreToAdd);
+
+			if(GetNetMode() != NM_DedicatedServer)
+			{
+				ANimbleGiantTestGameState* GameState = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
+				if (GameState->GetBoxCount() == 0)
+				{
+					GameState->EndGame();
+				}
+			}
 		}
 		Destroy();
 	}

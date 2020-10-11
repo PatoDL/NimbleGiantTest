@@ -38,7 +38,7 @@ void ABoxSpawner::SpawnPyramid_Implementation()
 	
 	while (BaseBoxAmount > 0)
 	{
-		for (int i = BaseBoxAmount; i > 0; i--)
+		for (int32 i = BaseBoxAmount; i > 0; i--)
 		{
 			//GetWorld()->SpawnActor(Box, Loc, Rot);
 			FTransform Transform;
@@ -46,7 +46,7 @@ void ABoxSpawner::SpawnPyramid_Implementation()
 			Transform.SetRotation(GetActorRotation().Quaternion());
 
 			ADestructibleBox* NewBox = GetWorld()->SpawnActor<ADestructibleBox>(Box, Transform);
-			if (GameState)
+			if (GameState != nullptr)
 				GameState->AddBox(NewBox);
 			FVector ActualLocation = GetActorLocation();
 			ActualLocation.Y += 100;
@@ -64,9 +64,9 @@ void ABoxSpawner::SetBoxColors_Implementation()
 {
 	ANimbleGiantTestGameState* GameState = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
 
-	if (GameState)
+	if (GameState != nullptr)
 	{
-		for (int i = 0; i < GameState->GetBoxCount(); i++)
+		for (int32 i = 0; i < GameState->GetBoxCount(); i++)
 		{
 			GameState->GetBox(i)->ColorValue = FMath::RandRange(1, 3);
 			if(GetNetMode() != NM_DedicatedServer)

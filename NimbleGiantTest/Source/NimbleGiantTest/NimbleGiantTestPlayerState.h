@@ -14,6 +14,9 @@ class NIMBLEGIANTTEST_API ANimbleGiantTestPlayerState : public APlayerState
 {
 private:
 	GENERATED_BODY()
+
+	UPROPERTY(ReplicatedUsing=OnRep_Score)
+	int32 RemainingBoxes = 0;
 	
 public:
 	UFUNCTION(Server, Reliable)
@@ -22,8 +25,13 @@ public:
 	void OnRep_Score() override;
 	
 	UFUNCTION(Client, Reliable)
-	void OnScoreUpdate() const;
+	void OnScoreUpdate();
 
+	void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
+	
 	UFUNCTION(Server, Reliable)
 	void AskForRestart();
+
+	UFUNCTION(Server, Reliable)
+	void OnGameEnded();
 };

@@ -32,7 +32,7 @@ protected:
 public:
 
 	UFUNCTION()
-		void GetScores(TArray<float> GotScores);
+		void GetScores();
 
 	UFUNCTION()
 		void DrawScores();

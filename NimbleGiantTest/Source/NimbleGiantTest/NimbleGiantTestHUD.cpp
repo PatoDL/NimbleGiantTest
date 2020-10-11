@@ -46,7 +46,7 @@ void ANimbleGiantTestHUD::BeginPlay()
 	{
 		ScoreWidget = CreateWidget<UUserWidget>(GetWorld(), ScoreWidgetClass);
 
-		if (ScoreWidget)
+		if (ScoreWidget != nullptr)
 		{
 			ScoreWidget->AddToViewport();
 		}
@@ -56,7 +56,7 @@ void ANimbleGiantTestHUD::BeginPlay()
 	{
 		EndGameWidget = CreateWidget<UUserWidget>(GetWorld(), EndGameWidgetClass);
 
-		if (EndGameWidget)
+		if (EndGameWidget != nullptr)
 		{
 			EndGameWidget->AddToViewport();
 			EndGameWidget->SetVisibility(ESlateVisibility::Hidden);
@@ -70,7 +70,7 @@ void ANimbleGiantTestHUD::Tick(float DeltaSeconds)
 
 	UScoreWidget* NewScoreWidget = Cast<UScoreWidget>(ScoreWidget);
 
-	if(NewScoreWidget)
+	if(NewScoreWidget != nullptr)
 	{
 		NewScoreWidget->UpdateScore();
 	}
@@ -78,18 +78,19 @@ void ANimbleGiantTestHUD::Tick(float DeltaSeconds)
 
 void ANimbleGiantTestHUD::ShowGameOver_Implementation()
 {
-	if(EndGameWidget)
+	if(EndGameWidget != nullptr && EndGameWidget->GetVisibility() != ESlateVisibility::Visible)
 	{
 		EndGameWidget->SetVisibility(ESlateVisibility::Visible);
 		UEndGameWidget* NewEndGameWidget = Cast<UEndGameWidget>(EndGameWidget);
 
-		if(NewEndGameWidget)
+		if (NewEndGameWidget != nullptr)
 		{
+			NewEndGameWidget->GetScores();
 			NewEndGameWidget->DrawScores();
 		}
 	}
 		
-	if (ScoreWidget)
+	if (ScoreWidget != nullptr)
 		ScoreWidget->SetVisibility(ESlateVisibility::Hidden);
 	
 	GetWorld()->GetGameState<ANimbleGiantTestGameState>()->PauseGamePlay(true);

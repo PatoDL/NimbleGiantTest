@@ -95,7 +95,7 @@ void ADestructibleBox::CascadeDestroy(uint32 &ScoreToAdd, uint16 FibonacciIndex)
 
 	TArray<bool> bHits;
 
-	for (int i = 0; i < 6; i++)
+	for (int32 i = 0; i < 6; i++)
 	{
 		bool bHit = false;
 		bHits.Add(bHit);
@@ -122,7 +122,7 @@ void ADestructibleBox::CascadeDestroy(uint32 &ScoreToAdd, uint16 FibonacciIndex)
 		{
 			ADestructibleBox* DestructibleBox = Cast<ADestructibleBox>(OutHits[i].GetActor());
 
-			if (DestructibleBox && DestructibleBox != this)
+			if (DestructibleBox != nullptr && DestructibleBox != this)
 			{
 				if(DestructibleBox->ColorValue == ColorValue && !DestructibleBox->bBoxAlreadyCheckedInCascade)
 				{
@@ -134,13 +134,9 @@ void ADestructibleBox::CascadeDestroy(uint32 &ScoreToAdd, uint16 FibonacciIndex)
 
 
 	ANimbleGiantTestGameState* GameState = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
-	if(GameState)
+	if(GameState != nullptr)
 	{
 		GameState->RemoveBox(this);
-		if(GameState->GetBoxCount() == 0)
-		{
-			GameState->EndGame();
-		}
 	}
 	Destroy();
 }

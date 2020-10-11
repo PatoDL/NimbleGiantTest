@@ -11,16 +11,9 @@ UCLASS(minimalapi)
 class ANimbleGiantTestGameMode : public AGameMode
 {
 	GENERATED_BODY()
-
-	
 	
 public:
 	ANimbleGiantTestGameMode();
-
-
-
-
-
 	UFUNCTION(Server, Reliable)
 	void ResetGame();
 	

@@ -15,6 +15,8 @@ class NIMBLEGIANTTEST_API ANimbleGiantTestGameState : public AGameState
 	GENERATED_BODY()
 
 	TArray<class ADestructibleBox*> BoxArray;
+
+	bool bHasGameEnded = false;
 public:
 	UFUNCTION(NetMulticast, Reliable)
 	void PauseGamePlay(bool ShouldPause);
@@ -45,4 +47,7 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void EndGame();
+
+	UFUNCTION()
+	TArray<int32> GetScores();
 };

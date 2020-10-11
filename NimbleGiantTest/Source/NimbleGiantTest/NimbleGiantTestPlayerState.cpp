@@ -4,7 +4,7 @@
 #include "NimbleGiantTestPlayerState.h"
 
 #include "NimbleGiantTestGameState.h"
-
+#include "Net/UnrealNetwork.h"
 
 void ANimbleGiantTestPlayerState::OnRep_Score()
 {
@@ -16,23 +16,49 @@ void ANimbleGiantTestPlayerState::OnRep_Score()
 		OnScoreUpdate();
 }
 
-void ANimbleGiantTestPlayerState::AskForRestart_Implementation()
+void ANimbleGiantTestPlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
-	ANimbleGiantTestGameState* GS = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	if(GS)
+	DOREPLIFETIME(ANimbleGiantTestPlayerState, RemainingBoxes);
+}
+
+void ANimbleGiantTestPlayerState::OnGameEnded_Implementation()
+{	
+	ANimbleGiantTestGameState* GameState = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
+
+	if (GameState != nullptr)
 	{
-		GS->CallRestartGame();
+		GameState->EndGame();
 	}
 }
 
-void ANimbleGiantTestPlayerState::OnScoreUpdate_Implementation() const
+void ANimbleGiantTestPlayerState::AskForRestart_Implementation()
 {
-	
-	//PC->GetHUD<ANimbleGiantTestHUD>()
+	ANimbleGiantTestGameState* GameState = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
+
+	if(GameState != nullptr)
+	{
+		GameState->CallRestartGame();
+	}
+}
+
+void ANimbleGiantTestPlayerState::OnScoreUpdate_Implementation()
+{
+	if (RemainingBoxes == 0)
+	{
+		OnGameEnded();
+	}
 }
 
 void ANimbleGiantTestPlayerState::AddScore_Implementation(int ScoreToAdd)
 {
 	Score += ScoreToAdd;
+
+	ANimbleGiantTestGameState* GameState = GetWorld()->GetGameState<ANimbleGiantTestGameState>();
+
+	if (GameState != nullptr)
+	{
+		RemainingBoxes = GameState->GetBoxCount();
+	}
 }
