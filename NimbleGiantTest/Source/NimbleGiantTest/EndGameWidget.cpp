@@ -22,10 +22,24 @@ void UEndGameWidget::GetScores()
 
 void UEndGameWidget::DrawScores()
 {
+	bool bHasAlreadyShownTheirScore = false;
 	for (int32 i = 0; i < Scores.Num(); i++)
 	{
 		UTextBlock* TextBlock = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass());
-		TextBlock->SetText(FText::FromString(FString::SanitizeFloat(Scores[i], 0)));
+		if(Scores[i] == GetOwningPlayerState<ANimbleGiantTestPlayerState>()->GetScore() && !bHasAlreadyShownTheirScore)
+		{
+			FString String("This is you -> ");
+			if(GetOwningPlayerState<ANimbleGiantTestPlayerState>()->GetNetMode() == NM_Standalone)
+			{
+				String = "Your Final Score: ";
+			}
+			TextBlock->SetText(FText::FromString(String + FString::SanitizeFloat(Scores[i], 0)));
+			bHasAlreadyShownTheirScore = true;
+		}
+		else
+		{
+			TextBlock->SetText(FText::FromString(FString::SanitizeFloat(Scores[i], 0)));
+		}
 		FSlateFontInfo FontInfo;
 		FontInfo = TextBlock->Font;
 		FontInfo.Size = 50;
@@ -37,7 +51,7 @@ void UEndGameWidget::DrawScores()
 		UVerticalBoxSlot* TextBlockSlot = Cast<UVerticalBoxSlot>(TextBlock->Slot);
 		if (TextBlockSlot != nullptr)
 		{
-			TextBlockSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Center);
+			TextBlockSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Right);
 		}
 	}
 }
