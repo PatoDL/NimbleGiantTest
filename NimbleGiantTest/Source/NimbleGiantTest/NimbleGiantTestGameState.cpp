@@ -10,7 +10,7 @@
 
 void ANimbleGiantTestGameState::ResetPlayers_Implementation()
 {
-	if (GetLocalRole() == ROLE_Authority)
+	if (GetLocalRole() < ROLE_Authority)
 	{
 		for (int32 i = 0; i < PlayerArray.Num(); i++)
 		{
